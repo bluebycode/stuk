@@ -2,6 +2,13 @@
 
 Gestión segura de equipos remotos. Port knocking, soluciones escalables en firewall sin modificar ni instalar complementos en las máquinas, segundo factor de control de acceso, notificaciones push, aprovisionamiento automático de claves SSH, integración con clientes SSH o MOSH, Latch.
 
+1. Sin agentes. (server) <- firewall logs <- polling <- (supervisor)
+2. Escalado. (server) ring <- provision <- (supervisor)
+3. Segundo factor control de acceso (2FA). (user) <-> middle <- (2fa-auth)
+4. Notificaciones. (user) -> stuk! -> server <- supervisor -> (publisher) -> (user)
+5. Key storage - auto (user) <- (2fa-auth db ?)
+6. [+supporting features] ssh integration
+7. [+supporting features] Latch
 
 ## What'd stuk-stuk fix? Security issues / posible features
 
