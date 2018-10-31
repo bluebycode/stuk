@@ -22,6 +22,9 @@ Gestión segura de equipos remotos. Port knocking, soluciones escalables en fire
 
 * Finally, there is the possibility of legitimate requests to open a port may include TCP/IP route packets out of order; or some packets may be dropped. This requires the sender to resend the packets. **How to avoid? ...**
 
+### 2FA with mobiles
+
+* Phones can be cloned, apps can run on several phones and cell-phone maintenance personnel can read SMS texts. Not least, cell phones can be compromised in general, meaning the phone is no longer something only the user has.**How to avoid? ...**
 
 ## References
 
