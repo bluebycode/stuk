@@ -4,11 +4,12 @@ Gestión segura de equipos remotos. Port knocking, soluciones escalables en fire
 
 1. Sin agentes. (server) <- firewall logs <- polling <- (supervisor)
 2. Escalado. (server) ring <- provision <- (supervisor)
-3. Segundo factor control de acceso (2FA). (user) <-> middle <- (2fa-auth)
-4. Notificaciones. (user) -> stuk! -> server <- supervisor -> (publisher) -> (user)
+3. Segundo factor control de acceso (2FA). (user) <-> middle <- (2fa-auth) [firebase 2fa],(https://firebase.google.com/docs/auth/) [firebase 2fa gauth @android] (https://www.youtube.com/watch?v=n2XgERPfMcU)
+4. Notificaciones. (user) -> stuk! -> server <- supervisor -> (publisher) -> (user) [firebase-user-notifications](https://firebase.google.com/docs/functions/use-cases?hl=es-419)
 5. Key storage - auto (user) <- (2fa-auth db ?)
 6. [+supporting features] ssh integration
 7. [+supporting features] Latch
+
 
 ## What'd stuk-stuk fix? Security issues / posible features
 
