@@ -5,7 +5,7 @@ Gestión segura de equipos remotos. Port knocking, soluciones escalables en fire
 
 ## What'd stuk-stuk fix? Security issues / posible features
 
-### Port-knocking:
+### Port-knocking:
 
 * Port knocking systems are very dependent upon the daemon working correctly and if it does not work, no connection can be made with the ports. Thus, the daemon creates a single point of failure. **How to avoid? ...**
 
