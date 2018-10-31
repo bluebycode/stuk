@@ -25,6 +25,7 @@ Gestión segura de equipos remotos. Port knocking, soluciones escalables en fire
 ### 2FA with mobiles
 
 * Phones can be cloned, apps can run on several phones and cell-phone maintenance personnel can read SMS texts. Not least, cell phones can be compromised in general, meaning the phone is no longer something only the user has.**How to avoid? ...**
+**Adding LOCATION MOBILE VS PC => https://www.androidauthority.com/create-a-gps-tracking-application-with-firebase-realtime-databse-844343/**
 
 ## References
 
