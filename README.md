@@ -1,8 +1,15 @@
-# stuk-stuk
+# Stuk
 
-Gestión segura de equipos remotos. Port knocking, soluciones escalables en firewall sin modificar ni instalar complementos en las máquinas, segundo factor de control de acceso, notificaciones push, aprovisionamiento automático de claves SSH, integración con clientes SSH o MOSH, Latch.
+Stuk es una solución para la gestión segura de ssh en equipos remotos mediante mecanismo de Port Knocking. Permite aprovisionamiento automático de claves SSH y acceso con un factor de autenticación por control de acceso múltiple (MFA) y/o universal (U2F). Solución escalable y aplicable a infraestructuras IT en la nube o físicas.
 
-![](recursos/diagrama.png)
+
+![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
+
+
+
+
+
+
 
 1. Sin agentes. (server) <- firewall logs <- polling <- (supervisor)
 2. Escalado. (server) ring <- provision <- (supervisor)
