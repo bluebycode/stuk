@@ -11,9 +11,9 @@ Stuk es una solución para la gestión segura de ssh en equipos remotos mediante
 
 
 
-1. Sin agentes. (server) <- firewall logs <- polling <- (supervisor)
-2. Escalado. (server) ring <- provision <- (supervisor)
-3. Knock-client. (user) -> (ssh wrapper) -> stuk! [python sshv2 native](https://github.com/paramiko/paramiko) [ssh wrapper golang] (https://github.com/arthurpro/go-easyssh)
+
+1. Escalado. (server) ring <- provision <- (supervisor)
+2. Knock-client. (user) -> (ssh wrapper) -> stuk! [python sshv2 native](https://github.com/paramiko/paramiko) [ssh wrapper golang] (https://github.com/arthurpro/go-easyssh)
 3. Segundo factor control de acceso (2FA). (user) <-> middle <- (2fa-auth) [firebase 2fa],(https://firebase.google.com/docs/auth/) [firebase 2fa gauth @android] (https://www.youtube.com/watch?v=n2XgERPfMcU)
 4. Notificaciones. (user) -> stuk! -> server <- supervisor -> (publisher) -> (user) [firebase-user-notifications](https://firebase.google.com/docs/functions/use-cases?hl=es-419)
 5. Key storage - auto (user) <- (2fa-auth db ?)
