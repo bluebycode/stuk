@@ -2,6 +2,8 @@
 
 Gestión segura de equipos remotos. Port knocking, soluciones escalables en firewall sin modificar ni instalar complementos en las máquinas, segundo factor de control de acceso, notificaciones push, aprovisionamiento automático de claves SSH, integración con clientes SSH o MOSH, Latch.
 
+![](recursos/diagrama.png)
+
 1. Sin agentes. (server) <- firewall logs <- polling <- (supervisor)
 2. Escalado. (server) ring <- provision <- (supervisor)
 3. Knock-client. (user) -> (ssh wrapper) -> stuk! [python sshv2 native](https://github.com/paramiko/paramiko) [ssh wrapper golang] (https://github.com/arthurpro/go-easyssh)
