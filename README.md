@@ -6,20 +6,15 @@ Stuk es una solución para la gestión segura de ssh en equipos remotos mediante
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
 
+**Stuk cliente**. Cliente SSH encapsulado con mecanismo de Port-Knocking (Golang).
+* Auto gestión de claves públicas/privadas (virtuales y/o físicas) para dominios/servicios (GPG,Yubico keys..)
+* Petición de habilitado de acceso a sistemas en la infrastructura por SSH (mecanismo Port-Knocking)
 
-
-
-
-
-
-1. Escalado. (server) ring <- provision <- (supervisor)
-2. Knock-client. (user) -> (ssh wrapper) -> stuk! [python sshv2 native](https://github.com/paramiko/paramiko) [ssh wrapper golang] (https://github.com/arthurpro/go-easyssh)
-3. Segundo factor control de acceso (2FA). (user) <-> middle <- (2fa-auth) [firebase 2fa],(https://firebase.google.com/docs/auth/) [firebase 2fa gauth @android] (https://www.youtube.com/watch?v=n2XgERPfMcU)
-4. Notificaciones. (user) -> stuk! -> server <- supervisor -> (publisher) -> (user) [firebase-user-notifications](https://firebase.google.com/docs/functions/use-cases?hl=es-419)
-5. Key storage - auto (user) <- (2fa-auth db ?)
-6. [+supporting features] ssh integration
-7. [+supporting features] Latch
-
+**Stuk supervisor**. Servicio instalado en la red privada de la infrastructura cercano a los sistemas que supervisa y administra (Golang.)
+  * *Identificación*. El cliente de Stuk envía token de identificación del remitente al sistema de supervisión.  
+  * *Autenticación*.  El cliente de Stuk envía token cifrado basado en la clave de un solo uso (TOTP) y clave privada. 
+  Un servicio serverless de autenticación (Ruby+Firebase) proporciona mecanismo autenticación sobre el identificado. Siendo necesario un repositorio para el aprovisionamiento de claves públicas y tokens temporales para identificados (Redis).
+  * *Escalado*. El supervisor administra a los sistemas que supervisa de forma distribuida y como solución escalable a varios niveles.
 
 ## What'd stuk-stuk fix? Security issues / posible features
 
@@ -35,6 +30,12 @@ Stuk es una solución para la gestión segura de ssh en equipos remotos mediante
 
 * Phones can be cloned, apps can run on several phones and cell-phone maintenance personnel can read SMS texts. Not least, cell phones can be compromised in general, meaning the phone is no longer something only the user has.**How to avoid? ...**
 **Adding LOCATION MOBILE VS PC => https://www.androidauthority.com/create-a-gps-tracking-application-with-firebase-realtime-databse-844343/**
+
+## Colaboradores
+
+* Iván Jímenez
+* Álvaro López (@vrandkode)
+* Guillermo Mora
 
 ## References
 
