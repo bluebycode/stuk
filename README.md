@@ -16,6 +16,19 @@ Stuk es una solución para la gestión segura de ssh en equipos remotos mediante
   Un servicio serverless de autenticación (Ruby+Firebase) proporciona mecanismo autenticación sobre el identificado. Siendo necesario un repositorio para el aprovisionamiento de claves públicas y tokens temporales para identificados (Redis).
   * *Escalado*. El supervisor administra a los sistemas que supervisa de forma distribuida y como solución escalable a varios niveles.
 
+## Casos de uso
+
+Habilita acceso SSH sobre los sistemas {a.domain.net, b.domain.net} reactivando la clave pública en ambas máquinas tras la secuencia toc-toc (port-knocking). Al final accede por ssh en ambos sistemas en un marco de tiempo marcado por la administración.
+
+```
+Google authenticator te da el token: 345321
+$ stuk 345321 a.domain.net b.domain.net
+```
+
+* Distintos dominios o servicios, distintas claves.
+
+
+
 ## Colaboradores
 
 * Iván Jímenez
