@@ -6,11 +6,11 @@ Stuk es una solución para la gestión segura de ssh en equipos remotos mediante
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
 
-**Stuk cliente**. Cliente SSH encapsulado con mecanismo de Port-Knocking (Golang).
+**Stuk cliente**. Cliente SSH encapsulado con mecanismo de Port-Knocking (Python).
 * Auto gestión de claves públicas/privadas (virtuales y/o físicas) para dominios/servicios (GPG,Yubico keys..)
 * Petición de habilitado de acceso a sistemas en la infrastructura por SSH (mecanismo Port-Knocking)
 
-**Stuk supervisor**. Servicio instalado en la red privada de la infrastructura cercano a los sistemas que supervisa y administra (Golang.)
+**Stuk supervisor**. Servicio instalado en la red privada de la infrastructura cercano a los sistemas que supervisa y administra (Python.)
   * *Identificación*. El cliente de Stuk envía token de identificación del remitente al sistema de supervisión.  
   * *Autenticación*.  El cliente de Stuk envía token cifrado basado en la clave de un solo uso (TOTP) y clave privada. 
   Un servicio serverless de autenticación (Ruby+Firebase) proporciona mecanismo autenticación sobre el identificado. Siendo necesario un repositorio para el aprovisionamiento de claves públicas y tokens temporales para identificados (Redis).
@@ -26,6 +26,14 @@ $ stuk 345321 a.domain.net b.domain.net
 ```
 
 * Distintos dominios o servicios, distintas claves.
+
+## Recursos utilizados
+
+Dado que la solución será llevada a cabo sobre una infrastructura virtualizada como prueba de concepto, necesitaremos de maquinas virtuales para ello:
+
+* Una máquina Ubuntu 18.04 (auth)
+* Dos máquinas Ubuntu 16.x (sistema final y supervisor)
+
 
 ## Colaboradores
 
