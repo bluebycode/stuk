@@ -1,0 +1,26 @@
+.login-body
+  .login-container
+    %h1.text-center Sign up
+    %br
+    = simple_form_for(user, as: resource_name, url: registration_path(resource_name)) do |f|
+      .row
+        .col-md-6
+          .form-group
+            = f.input :email, label: 'E-mail', required: true
+          .form-group
+            = f.input :password, label: 'Password', required: true
+          .form-group
+            = f.input :password_confirmation, label: 'Confirm password', required: true
+        .col-md-6
+          .form-group
+            = f.input :first_name, label: 'First Name', required: true
+          .form-group
+            = f.input :last_name, label: 'Last Name', required: true
+          .form-group
+            = f.input :birth_date, label: 'Birth Date (YYYY-MM-DD)', required: true, as: :date, placeholder: 'YYYY-MM-DD', html5: true
+        %br
+      .actions.text-center
+        = f.button :submit, 'Done!', class: 'btn btn-primary w-100'
+        %br
+        %br
+= link_to 'Back', new_user_session_path, class: 'btn btn-secondary'

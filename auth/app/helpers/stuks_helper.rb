@@ -1,0 +1,2 @@
+module StuksHelper
+end
