@@ -1,1 +1,4 @@
 <%= (ap @user).html_safe %>
+<%= link_to(destroy_user_session_path, method: :delete, class: 'btn btn-secondary my-search-form') do %>
+  Log Out
+<% end %>
