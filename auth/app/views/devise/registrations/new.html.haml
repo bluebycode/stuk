@@ -1,26 +1,30 @@
 .login-body
   .login-container
-    %h1.text-center Sign up
+    %h1.text-center Registro
+    %h3.text-center Universidad Zel
     %br
-    = simple_form_for(user, as: resource_name, url: registration_path(resource_name)) do |f|
+    = simple_form_for(@user, as: resource_name, url: registration_path(resource_name)) do |f|
+      .form-group
+        = f.input :email, label: 'E-mail', required: true
+      .form-group
+        = f.input :password, label: 'Contraseña', required: true
+      .form-group
+        = f.input :password_confirmation, label: 'Confirmar contraseña', required: true
       .row
         .col-md-6
           .form-group
-            = f.input :email, label: 'E-mail', required: true
-          .form-group
-            = f.input :password, label: 'Password', required: true
-          .form-group
-            = f.input :password_confirmation, label: 'Confirm password', required: true
+            = f.input :name, label: 'Nombre', required: true
         .col-md-6
           .form-group
-            = f.input :first_name, label: 'First Name', required: true
+            = f.input :surname, label: 'Apellidos', required: true
+        .col-md-6
           .form-group
-            = f.input :last_name, label: 'Last Name', required: true
-          .form-group
-            = f.input :birth_date, label: 'Birth Date (YYYY-MM-DD)', required: true, as: :date, placeholder: 'YYYY-MM-DD', html5: true
+            = f.input :grade, collection: %w(1ºGrado 2ºGrado 3ºGrado 4ºGrado 1ºMaster 2ºMaster), label: 'Curso', required: true
         %br
       .actions.text-center
-        = f.button :submit, 'Done!', class: 'btn btn-primary w-100'
+        = f.button :submit, 'Confirmar registro', class: 'btn btn-primary w-100'
         %br
         %br
-= link_to 'Back', new_user_session_path, class: 'btn btn-secondary'
+        = link_to 'Volver', new_user_session_path, class: 'btn btn-secondary'
+        %br
+        %br

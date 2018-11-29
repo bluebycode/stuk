@@ -1,0 +1,65 @@
+$gray: #dddddd;
+
+.gray{
+  background-color: $gray;
+}
+
+.login-body {
+  background: image_url('background-login.jpg') fixed;
+  background-size: cover;
+  padding: 40px;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .login-container {
+    border-top: 14px solid #d19b3d;
+    background-color: #2e353d;
+    padding: 30px;
+    width: 500px;
+    max-height: 600px;
+    overflow-y: scroll;
+
+    p, label, a, span, h1, h2, h3 {
+      color: white;
+    }
+
+    .form-actions{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      a{
+        margin-left: 10px;
+      }
+    }
+
+    abbr{
+      color: red;
+    }
+
+    .help-block{
+      color: #996666;
+    }
+  }
+}
+
+.loginform{
+  margin-top: 40px;
+  padding: 20px;
+  max-width: 300px;
+}
+
+.editprofile{
+  margin-top: 40px;
+  padding: 30px;
+  max-width: 500px;
+}
+
+.form-group{
+  input[type=email], input[type=password], input[type=date] {
+    width: 100%;
+  }
+}
