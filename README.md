@@ -11,7 +11,9 @@ https://trello.com/b/xQixdEBY/stuk
 
 * 15:00 Brainstorming, sobre el desarrollo de tareas para antes del primer hito, creación de tareas y asignación, seguimiento.
 * 16:00 Montaje de infrastructura virtualizada. Inicio del desarrollo de stuk-client y stuk-auth.
-* 17:00 - 
+* 17:00 Desarrollo (stuk auth creado / cliente / supervisor recupera paquetes mediante libreria libcap)
+* 18:00 Brainstorming de aceleration. Tareas pendientes como acelerarlas
+* 19:00 -
 
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
