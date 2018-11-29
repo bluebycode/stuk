@@ -27,8 +27,6 @@ $ stuk 345321 a.domain.net b.domain.net
 
 * Distintos dominios o servicios, distintas claves.
 
-
-
 ## Colaboradores
 
 * Iván Jímenez
