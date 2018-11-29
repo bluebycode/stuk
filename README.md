@@ -2,11 +2,16 @@
 
 Stuk es una solución para la gestión segura de ssh en equipos remotos mediante mecanismo de Port Knocking. Permite aprovisionamiento automático de claves SSH y acceso con un factor de autenticación por control de acceso múltiple (MFA) y/o universal (U2F). Solución escalable y aplicable a infraestructuras IT en la nube o físicas.
 
-
-## Sigue el desarrollo bajo un **tablero de tareas** (Trello)
+## Metodología
+### Sigue el desarrollo bajo un **tablero de tareas** (Trello)
 
 https://trello.com/b/xQixdEBY/stuk
 
+### Cronología
+
+15:00 - 16:00 Brainstorming, sobre el desarrollo de tareas para antes del primer hito, creación de tareas y asignación, seguimiento.
+16:00 - 17:00 Montaje de infrastructura virtualizada. Inicio del desarrollo de stuk-client y stuk-auth.
+17:00 - 
 
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
