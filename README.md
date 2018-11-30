@@ -19,6 +19,8 @@ https://trello.com/b/xQixdEBY/stuk
 * 10:00 brainstorming y desarrollo
 * 11:30 brainstorming issues + planificación de tareas
 * 12:30 Desarrollo de *tareas prioritarias* para obtener funcionalidad básica.
+* 19.30 Brainstorming: issues + planificación de tareas
+* 20:30 -
 
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
