@@ -19,6 +19,7 @@
           =link_to('Desactivar 2FA', uninstall_gauth_stuks_path, class: 'btn btn-danger')
         - else
           = link_to('Activar 2FA', install_gauth_stuks_path, class: 'btn btn-success')
+        = link_to('Descargar Configuraciones', install_gauth_stuks_path, class: 'btn btn-danger')
       .col-8
         %h1.text-center=current_user.email
         %h3.text-center=current_user.grade
