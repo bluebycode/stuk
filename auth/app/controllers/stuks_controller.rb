@@ -2,11 +2,23 @@ require 'barby'
 require 'barby/barcode'
 require 'barby/barcode/qr_code'
 require 'barby/outputter/png_outputter'
+require 'json'
 
 class StuksController < ApplicationController
   before_action :authenticate_user!, except: [:verify, :verify_test]
 
   def index; end
+
+  def generate_keys
+    keys_zip = generate_ssh_kp_zip(current_user.email)
+    send_data keys_zip, filename: 'claves_stuk.zip'
+  end
+
+  def generate_config
+    machine = Machine.find(params[:id])
+    config_json = machine.generate_config_json(current_user.email)
+    send_data config_json, filename: 'configs.json'
+  end
 
   def verify_test
     respond_to do |format|
@@ -31,6 +43,7 @@ class StuksController < ApplicationController
     end
   end
 
+  # Fuente: https://alisafrunza.github.io/rails/two-factor-auth.html
   def install_gauth
     return :forbidden if current_user.otp_required_for_login
     current_user.unconfirmed_otp_secret = User.generate_otp_secret
@@ -39,6 +52,7 @@ class StuksController < ApplicationController
     current_user.activate_otp
   end
 
+  # Fuente: https://alisafrunza.github.io/rails/two-factor-auth.html
   def uninstall_gauth
     return :forbidden unless current_user.otp_required_for_login
     current_user.deactivate_otp
@@ -46,6 +60,20 @@ class StuksController < ApplicationController
   end
 
   private
+
+  def generate_ssh_kp_zip(email)
+    ssh_kp = SSHKey.generate(type: "RSA",
+                             bits: 1024,
+                             comment: email)
+    # Basado en https://stackoverflow.com/questions/2405921/how-can-i-generate-zip-file-without-saving-to-the-disk-with-ruby?rq=1
+    stringio = Zip::OutputStream.write_buffer do |zio|
+      zio.put_next_entry("id_rsa_stuk")
+      zio.write(ssh_kp.private_key)
+      zio.put_next_entry("id_rsa_stuk.pub")
+      zio.write(ssh_kp.public_key)
+    end
+    stringio.string
+  end
 
   def two_factor_url
     app_id = "zel"

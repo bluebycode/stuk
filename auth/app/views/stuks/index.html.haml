@@ -1,25 +1,13 @@
--#
--#<% if current_user.otp_required_for_login %>
--#  <%= link_to("Deactivate two factor", uninstall_gauth_stuks_path) %>
--#<% else %>
--#  <%= link_to("Activate two factor", install_gauth_stuks_path) %>
--#<% end %>
--#
--#<%= (ap current_user).html_safe %>
--#<%= link_to(destroy_user_session_path, method: :delete, class: 'btn btn-secondary my-search-form') do %>
--#  Log Out
--#<% end %>
-
-
 .stuk-body
   .stuk-container
     .row
       .col-2
         - if current_user.otp_required_for_login
-          =link_to('Desactivar 2FA', uninstall_gauth_stuks_path, class: 'btn btn-danger')
+          =link_to('Desactivar 2FA', uninstall_gauth_stuks_path, class: 'btn btn-danger', style: 'width: 150px')
         - else
           = link_to('Activar 2FA', install_gauth_stuks_path, class: 'btn btn-success')
-        = link_to('Descargar Configuraciones', install_gauth_stuks_path, class: 'btn btn-danger')
+        = link_to('Generar Claves', generate_keys_path, class: 'btn btn-primary', style: 'width: 150px')
+
       .col-8
         %h1.text-center=current_user.email
         %h3.text-center=current_user.grade
@@ -30,12 +18,8 @@
     %h2 Máquinas disponibles:
     %br
     .row
-      .col-4
-        %img{src: 'https://www.muycomputerpro.com/movilidad-profesional/wp-content/uploads/2017/04/IntelXeon.jpg'}
-        %h4 Alta capacidad de procesamiento
-      .col-4
-        %img{src: 'https://i.blogs.es/ee1d2b/titanv-2/1366_2000.jpg'}
-        %h4 Alta capacidad de GPU
-      .col-4
-        %img{src: 'https://images-eu.ssl-images-amazon.com/images/I/41T0A26E7WL.jpg'}
-        %h4 Máquinas reducidas
+      - @machines = Machine.all
+      - @machines.each do |machine|
+        .col-4
+          = link_to image_tag( machine.image_src), generate_config_path(machine)
+          %h4 nombre

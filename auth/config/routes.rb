@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   root to: "stuks#index"
 
   # API verification
-  get 'verify/test', to: 'stuks#verify_test', as: 'verify_test'
+  get 'verify_test/:user_domain_token', to: 'stuks#verify_test', as: 'verify_test', defaults: { format: :json }
   get 'verify/:user_domain_token', to: 'stuks#verify', as: 'verify', defaults: { format: :json }
+  get 'generate_keys', to: 'stuks#generate_keys', as: 'generate_keys'
+  get 'generate_config/:id', to: 'stuks#generate_config', as: 'generate_config'
 end

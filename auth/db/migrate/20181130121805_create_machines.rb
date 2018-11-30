@@ -4,6 +4,7 @@ class CreateMachines < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :ip
       t.string :sequence
+      t.text :image_src
 
       t.timestamps
     end

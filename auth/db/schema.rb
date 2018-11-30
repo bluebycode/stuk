@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2018_11_30_121805) do
     t.string "name"
     t.string "ip"
     t.string "sequence"
+    t.text "image_src"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
