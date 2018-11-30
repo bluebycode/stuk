@@ -22,6 +22,11 @@ gem 'uglifier', '>= 1.3.0'
 gem 'haml'
 gem 'font-awesome-sass', '>= 4.7.0'
 gem 'jquery-rails'
+gem 'barby'
+gem 'rqrcode'
+gem 'devise-two-factor'
+gem 'rqrcode_png'
+
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
