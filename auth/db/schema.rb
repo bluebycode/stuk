@@ -12,6 +12,15 @@
 
 ActiveRecord::Schema.define(version: 2018_11_30_152206) do
 
+  create_table "machines", force: :cascade do |t|
+    t.string "name"
+    t.string "ip"
+    t.string "sequence"
+    t.text "image_src"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false

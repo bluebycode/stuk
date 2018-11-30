@@ -3,6 +3,7 @@ require 'barby'
 require 'barby/barcode'
 require 'barby/barcode/qr_code'
 require 'barby/outputter/png_outputter'
+require 'json'
 
 class StuksController < ApplicationController
   before_action :authenticate_user!, except: %i[verify verify_test]
@@ -16,6 +17,12 @@ class StuksController < ApplicationController
   def generate_keys
     keys_zip = generate_ssh_kp_zip(current_user.email)
     send_data keys_zip, filename: 'claves_stuk.zip'
+  end
+
+  def generate_config
+    machine = Machine.find(params[:id])
+    config_json = machine.generate_config_json(current_user.email)
+    send_data config_json, filename: 'configs.json'
   end
 
   def verify_test
