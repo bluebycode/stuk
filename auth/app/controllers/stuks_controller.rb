@@ -4,12 +4,16 @@ require 'barby/barcode/qr_code'
 require 'barby/outputter/png_outputter'
 
 class StuksController < ApplicationController
+  before_action :authenticate_user!, except: [:verify, :verify_test]
 
   def index; end
 
   def verify_test
     respond_to do |format|
-      format.json { render json: { verify: true } }
+      format.json { render json: { verify: true,
+                                   user: 'zel@stuk.com ',
+                                   domain: 'stuk.com',
+                                   token: 2343455 } }
     end
   end
 
