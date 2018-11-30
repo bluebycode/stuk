@@ -58,6 +58,27 @@ $ stuk 345321 a.domain.net b.domain.net
 
 * Distintos dominios o servicios, distintas claves.
 
+## Roles del sistema
+
+La aplicación se encuentra preparada para que en el sistema participen los siguientes roles
+de componentes del sistema:
+
+* **Supervisor:** administra los perfiles de servicios, da de alta a usuarios en el servidor final
+ vía SSH y se encarga de la apertura de puertos en los servidores finales
+
+* **Autenticador:** servicio web mediante el cual se registran los usuarios y por el cual enlazan
+ con Google Authenticator el factor de doble autenticación. Tambien genera las claves públicas y privadas
+ de los usuarios finales.
+ 
+* **Máquinas finales:** redirigen todo el tráfico que reciben al supervisor por defecto. Únicamente cuando el
+supervisor reconoce una secuencia de port-knocking, con un usuario y un OTP correcto, permite la conexión directa
+El supervisor se encarga de toda la gestión de claves SSH
+
+* **Usuario final:** toda aquella persona o servicio que haga uso del sistema mediante stuk. Al usuario final
+se le proporciona un fichero de configuración y el cliente de conexión para que el proceso sea cómodo.
+En todo caso debe iniciar el proceso con la contraseña generada mediante Google Authenticator.
+
+
 ## Recursos utilizados
 
 Dado que la solución será llevada a cabo sobre una infrastructura virtualizada como prueba de concepto, necesitaremos de maquinas virtuales para ello:
@@ -65,9 +86,8 @@ Dado que la solución será llevada a cabo sobre una infrastructura virtualizada
 * Una máquina Ubuntu 18.04 (auth) 172.16.64.77
 * Dos máquinas Centos 7.x (sistema final y supervisor)
 
-
 ## Colaboradores
 
 * Iván Jímenez
 * Álvaro López (@vrandkode)
-* Guillermo Mora
+* Guillermo Mora (@guillermijas)
