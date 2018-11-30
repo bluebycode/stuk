@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -8,7 +10,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   devise :two_factor_authenticatable,
-         :otp_secret_encryption_key => "hsfdbbhsjhdbndn&&6GFF87654678r90hbvgfcxvGF"
+         otp_secret_encryption_key: 'hsfdbbhsjhdbndn&&6GFF87654678r90hbvgfcxvGF'
 
   def activate_otp
     self.otp_required_for_login = true
@@ -24,7 +26,11 @@ class User < ApplicationRecord
   end
 
   def complete_registration
-    self.role = 'Estudiante'
+    self.role = 'estudiante'
     self.salt = SecureRandom.hex
+  end
+
+  def admin?
+    role == 'admin'
   end
 end

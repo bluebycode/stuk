@@ -9,6 +9,10 @@ class StuksController < ApplicationController
 
   def index; end
 
+  def admin_dashboard
+    head :forbidden unless current_user.admin?
+  end
+
   def generate_keys
     keys_zip = generate_ssh_kp_zip(current_user.email)
     send_data keys_zip, filename: 'claves_stuk.zip'
@@ -28,7 +32,7 @@ class StuksController < ApplicationController
   def verify
     seq = params[:user_domain_token]
     decrypted_seq = Base64.decode64(seq)
-    user_info = decrypted_seq.split('/') # 0: user, 1: domain, 2: OTP, 3: PubKey
+    user_info = decrypted_seq.split(';') # 0: user, 1: domain, 2: OTP, 3: PubKey
     user = User.find_by(email: user_info[0])
 
     correct_otp = user.validate_and_consume_otp!(user_info[2], otp_secret: user.otp_secret)
