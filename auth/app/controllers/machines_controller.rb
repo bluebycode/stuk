@@ -1,5 +1,6 @@
-class MachinesController < ApplicationController
+# frozen_string_literal: true
 
+class MachinesController < ApplicationController
   def create
     @machine = Machine.new(machine_params)
 
@@ -8,6 +9,29 @@ class MachinesController < ApplicationController
         format.html { redirect_to root_path, notice: 'Machine was successfully created.' }
       end
     end
+  end
+
+  def machine_users
+    set_machine
+    @users = User.where.not(role: 'admin')
+  end
+
+  def assign_user_machine
+    set_machine
+    user = User.find_by(email: params['email'])
+    ap 'create'
+    umach = UserMachine.new(user: user, machine: @machine)
+    umach.generate_username
+    umach.save!
+    head :ok
+  end
+
+  def unassign_user_machine
+    set_machine
+    user = User.find_by(email: params['email'])
+    umach = UserMachine.find_by(user: user, machine: @machine)
+    umach&.delete
+    head :ok
   end
 
   # Use callbacks to share common setup or constraints between actions.

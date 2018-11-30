@@ -1,6 +1,8 @@
 require 'json'
 
 class Machine < ApplicationRecord
+  has_many :user, through: :user_machines
+  has_many :user_machines
 
   before_create :ensure_image
 
@@ -15,3 +17,5 @@ class Machine < ApplicationRecord
       email: email }.to_json
   end
 end
+
+
