@@ -18,6 +18,7 @@ https://trello.com/b/xQixdEBY/stuk
 
 * 10:00 brainstorming y desarrollo
 * 11:30 brainstorming issues + planificación de tareas
+* 12:30 Desarrollo de *tareas prioritarias* para obtener funcionalidad básica.
 
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
@@ -37,10 +38,16 @@ Acceso actual: http://172.16.64.77:3000
 **Stuk authenticator**. Un servicio de autenticación (Ruby+Firebase) proporciona mecanismo autenticación sobre el identificado. Siendo necesario un repositorio para el aprovisionamiento de "salt"s(Redis).
 
 * *Identificación*. Identificación de la plataforma vinculada a un factor 2FA mediante TOTP. Se genera un salt por cada usuario o se genera uno común para la plataforma. Para el primer caso debería existir un repositorio para su aprovisionamiento.
-* *Autenticación*.  El cliente de Stuk envía token cifrado basado en la clave de un solo uso (TOTP) y clave privada. 
-  
+* *Autenticación*.  El cliente de Stuk envía token cifrado basado en la clave de un solo uso (TOTP) y clave privada.
 
 ## Casos de uso
+
+A partir de la plataforma ofrecida por una universidad, laboratorios http://172.16.64.77:3000, el usuario mediante un vínculo con ayuda de la aplicación Google Authenticator, obtiene una versión cliente de **stuk** junto con una plantilla de preconfiguración/o perfil de acceso, con el fin de agilizar el inicio de sesión.
+
+```
+Google authenticator te da el token: 345321
+$ stuk 345321
+```
 
 Habilita acceso SSH sobre los sistemas {a.domain.net, b.domain.net} reactivando la clave pública en ambas máquinas tras la secuencia toc-toc (port-knocking). Al final accede por ssh en ambos sistemas en un marco de tiempo marcado por la administración.
 
@@ -55,8 +62,8 @@ $ stuk 345321 a.domain.net b.domain.net
 
 Dado que la solución será llevada a cabo sobre una infrastructura virtualizada como prueba de concepto, necesitaremos de maquinas virtuales para ello:
 
-* Una máquina Ubuntu 18.04 (auth) 
-* Dos máquinas Ubuntu 16.x (sistema final y supervisor)
+* Una máquina Ubuntu 18.04 (auth) 172.16.64.77
+* Dos máquinas Centos 7.x (sistema final y supervisor)
 
 
 ## Colaboradores
