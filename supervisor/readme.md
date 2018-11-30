@@ -1,3 +1,3 @@
 # Supervisor parser
 
-just run ```python app.py```
+just run ```python agent.py```

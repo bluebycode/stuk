@@ -3,7 +3,11 @@ import base64
 
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
-    
+
+def OpenPrivateKey(path):
+    """ Open a private key from a file system location """
+    return RSA.importKey(open(path).read())
+
 def AD(rsa, cipheredmessage):
     """ RSA - Asymetric Decryptation mediante PKCS1_OAEP """
     key = RSA.importKey(open(rsa).read())
