@@ -7,20 +7,12 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     post "/users/sessions/verify_otp" => "users/sessions#verify_otp"
-
-    authenticated :user do
-      root 'stuks#index', as: :authenticated_root
-    end
-
-    unauthenticated do
-      root 'devise/sessions#new', as: :unauthenticated_root
-    end
   end
 
-  resources :two_factor do
+  resources :stuks do
     collection do
-      get :activate
-      get :deactivate
+      get :install_gauth
+      get :uninstall_gauth
     end
   end
 

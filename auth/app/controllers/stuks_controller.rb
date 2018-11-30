@@ -5,16 +5,13 @@ require 'barby/outputter/png_outputter'
 
 class StuksController < ApplicationController
 
-  def index
-    @user = current_user
-  end
+  def index; end
 
   def verify_test
     respond_to do |format|
       format.json { render json: { verify: true } }
     end
   end
-
 
   def verify
     seq = params[:user_domain_token]
@@ -27,5 +24,27 @@ class StuksController < ApplicationController
                                    domain: user_info[1],
                                    token: user_info[2] } }
     end
+  end
+
+  def install_gauth
+    return :forbidden if current_user.otp_required_for_login
+    current_user.unconfirmed_otp_secret = User.generate_otp_secret
+    current_user.save!
+    @qr_code = RQRCode::QRCode.new(two_factor_url).to_img.resize(280, 280).to_data_url
+    current_user.activate_otp
+  end
+
+  def uninstall_gauth
+    return :forbidden unless current_user.otp_required_for_login
+    current_user.deactivate_otp
+    redirect_back(fallback_location: root_path)
+  end
+
+  private
+
+  def two_factor_url
+    app_id = "zel"
+    app_name = "stuk.com"
+    "otpauth://totp/#{app_id}:#{current_user.email}?secret=#{current_user.unconfirmed_otp_secret}&issuer=#{app_name}"
   end
 end
