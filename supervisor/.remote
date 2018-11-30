@@ -1,0 +1,11 @@
+{
+  "autoConnect": true,
+  "connection": {
+    "host": "10.0.1.134",
+    "username": "cybercamp",
+    "privateKey": "/Users/vrandkode/Workspace/Hackaton/stuk/infrastructure/keys/cybercamp.pem",
+    "port": "22"
+  },
+  "basePath": "/home/cybercamp/agent/",
+  "ignore": [".git", "env"]
+}
