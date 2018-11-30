@@ -2,14 +2,16 @@ require 'json'
 
 class Machine < ApplicationRecord
 
-  def generate_config_json(email)
+  before_create :ensure_image
 
-    config_json = {
-        name: self.name,
-        ip: self.ip,
-        sequence: self.sequence,
-        email: email
-    }.to_json
+  def ensure_image
+    self.image_src = 'https://www2.fgcu.edu/BTS/images/optiplex5040.jpg' if image_src.blank?
   end
 
+  def generate_config_json(email)
+    { name: name,
+      ip: ip,
+      sequence: sequence,
+      email: email }.to_json
+  end
 end

@@ -8,10 +8,15 @@ require 'json'
 class StuksController < ApplicationController
   before_action :authenticate_user!, except: %i[verify verify_test]
 
-  def index; end
+  def index
+    redirect_to admin_dashboard_path if current_user.admin?
+    @machines = Machine.all
+  end
 
   def admin_dashboard
-    head :forbidden unless current_user.admin?
+    redirect_to root_path unless current_user.admin?
+    @machines = Machine.all
+    @machine = Machine.new
   end
 
   def generate_keys
@@ -41,17 +46,14 @@ class StuksController < ApplicationController
     decrypted_seq = Base64.decode64(seq)
     user_info = decrypted_seq.split(';') # 0: user, 1: domain, 2: OTP, 3: PubKey
     user = User.find_by(email: user_info[0])
-
     correct_otp = user.validate_and_consume_otp!(user_info[2], otp_secret: user.otp_secret)
-    correct_public_key = user.public_key == user_info[3]
-    validation = correct_otp && correct_public_key
+    ap({ verify: correct_otp, user: user_info[0], domain: user_info[1], token: user_info[2] })
     respond_to do |format|
       format.json do
-        render json: { verify: validation,
+        render json: { verify: correct_otp,
                        user: user_info[0],
                        domain: user_info[1],
-                       token: user_info[2],
-                       public_key: user_info[3] }
+                       token: user_info[2] }
       end
     end
   end
