@@ -16,6 +16,8 @@ https://trello.com/b/xQixdEBY/stuk
 * 18:00 Brainstorming de aceleration. Tareas pendientes como acelerarlas
 * 19:00 Desarrollo + Planificación en la resolución y tareas pendientes para el siguiente dia
 
+* 10:00 brainstorming y desarrollo
+* 11:30 brainstorming issues + planificación de tareas
 
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
