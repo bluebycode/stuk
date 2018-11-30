@@ -21,9 +21,10 @@ class StuksController < ApplicationController
     seq = params[:user_domain_token]
     decrypted_seq = Base64.decode64(seq)
     user_info = decrypted_seq.split("/")
-
+    user = User.find_by(email: user_info[0])
+    validation = user.validate_and_consume_otp!(user_info[2], otp_secret: user.otp_secret)
     respond_to do |format|
-      format.json { render json: { verify: true,
+      format.json { render json: { verify: validation,
                                    user: user_info[0],
                                    domain: user_info[1],
                                    token: user_info[2] } }
