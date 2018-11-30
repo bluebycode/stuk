@@ -3,63 +3,75 @@
 
 """Stuk: Punto de entrada de cliente stuk"""
 import argparse
-from crypto import AE, AD
+import socket
+from crypto import AE, AD, PairKey
+from Crypto.PublicKey import RSA
+import select as select
+import time
+import sys
+import os
 
-class KeyManagementContext:
-    userPublicContext = { "path": None, "key": None }
-    def KeyManagementContext(self):
-        """ Obtiene la clave desde el contxto de configuración
-        o en memoria si se persistió"""
-        return '[] context initialised...'
-    def exists(self):
-        return False
-    def regeneration(self):
-        """ Regenera el contexto de claves para el usuario
-        Genera el par de claves en contexto. @todo
-        """
-        self.userPublicContext = { key: "<example pub key>", path: ".ssh/pub.key" }
+class Authentication(object):
+    def build(self):
+        token = AE("tests/.keys/it_public.pem", "AAAAAAAAA")
+        print("[] encrypted token {0}".format(token))
+        decrypted = AD("tests/.keys/it_private.pem", token)
+        print("[] decrypted token {0}".format(decrypted))
+        return "AAAAAAAAA"
 
-def buildScapySequence(destination, token):
-    return IP(src="10.0.1.1",dst="10.0.1.130")/TCP(flags='S',dport=[22])/"AAAAAAAA"
+class Sequences(object):
+    def __init__(self, args: list, token):
+        print("[] Authentication token", token)
+        self._parse_args(args)
 
-def initialSequence(password, destination, key = None):
-    """ Inicia la secuencia de Port-knocking. 
-    Genera el token de autenticación basado en las credenciales del usuario """
+    def _parse_args(self, args: list):
+        parser = argparse.ArgumentParser()
+        parser.add_argument('destination', help='IP address of destination')
+        parser.add_argument('token', help='TOTP')
 
-    print("[.] generando la secuencia, token: '{}'".format(password))
-    print("[.] servicio destino: '{}'".format(destination))
+        args = parser.parse_args(args)
+        
+        self.address, _, _, _, (self.destination, _) = socket.getaddrinfo(
+                host="10.0.1.135",
+                port=22,
+                flags=socket.AI_ADDRCONFIG
+            )[0]
+    def stuk(self):
+        for port in [4000,4001,4002]:
+            peer = socket.socket(self.address, socket.SOCK_STREAM)
+            peer.setblocking(False)
+            address = ("10.0.1.135", int(port))
+            peer.connect_ex(address)
+            select.select([peer], [peer], [peer], 10000)
+            peer.close()
+            time.sleep(0.5)
 
-    if not key:
-        print("[.] no se realiza petición de acceso por ssh")
+def addDomain(domain, path):
+    with open("{0}/.ssh/config".format(os.getenv("HOME")), "a") as f:
+        f.write("Host {0}\n    User cybercamp\n    IdentityFile {1}/{2}\n".format(domain, os.getcwd(), path))
+        
+def save(path, stream):
+    with open(path, 'bw') as f:
+        f.write(stream)
 
-    print("[.] todo")
-    sequence = buildScapySequence("10.0.1.130", seq = [22])
-)
-    p = IP(src="10.0.1.1",dst="10.0.1.130")/TCP(flags='S',dport=[22])/e
-    hexdump(p)
-    ans,unans = sr(p)
-    ans.summary()
-    pass
+def createLocalRealm(user, domain):
+    try:
+        publicKey, privateKey = PairKey(plain=True)
+        print(publicKey, privateKey)
+        save(".keys/{0}_{1}.public".format(user,domain), publicKey.exportKey('OpenSSH'))
+        save(".keys/{0}_{1}.private".format(user,domain), privateKey.exportKey("PEM"))
+        addDomain(domain, ".key/{0}_{1}.private".format(user,domain))
+        return user+"/"+domain, publicKey
+    except Exception as err:
+        print("error", err)
+        pass
+    return None,None
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('password ', help='timed password')
-    parser.add_argument('domain', help='domain.org/ip')
-    args = parser.parse_args()
+def createAuthenticationToken(domain, key):
+    return "{0}.{1}".format(domain,key)
 
-    """ Recupera el contexto de seguridad para el usuario incluyendo par de claves si se generó o existía.
-    """
-    context = KeyManagementContext()
-    if not context.exists:
-        context.regeneration()
-
-    """ Inicia la petición o secuencia mediante mecanismo de Port-Knocking"""
-    initialSequence(password = args.password, 
-        destination = args.domain,
-        key = context.userPublicContext)
-
-    token = AE("tests/.keys/it_public.pem", "AAAAAAAAA")
-    print("[] encrypted token {0}".format(token))
-    decrypted = AD("tests/.keys/it_private.pem", token)
-    print("[] decrypted token {0}".format(decrypted))
-
+if __name__ == '__main__':
+    domainToken, publicKey = createLocalRealm("user", "domain.org")
+    if (domainToken is None):
+        exit(-1)
+    Sequences(sys.argv[1:], createAuthenticationToken(domainToken, publicKey)).stuk()
