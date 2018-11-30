@@ -4,8 +4,12 @@ import base64
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
 
-def PairKey(plain=False):
-    key = RSA.generate(2048)
+def ParsePublicKey(path):
+    return RSA.importKey(open(path).read()).publickey().exportKey('OpenSSH')
+
+def PairKey(plain=False, size=2048):
+    """ Genera par de claves RSA """
+    key = RSA.generate(size)
     return (key, key.publickey()) if plain else (key.exportKey("PEM"), key.publickey().exportKey('OpenSSH'))
 
 def AD(rsa, cipheredmessage):
@@ -18,7 +22,6 @@ def AD(rsa, cipheredmessage):
     decrypted=b""
     while offset < len(encrypted):
         chunk = encrypted[offset:offset + block]
-        print(len(chunk))
         decrypted+= cipher.decrypt(chunk)
         offset+=block
     return decrypted
@@ -27,7 +30,6 @@ def AE(rsa, message):
     """ RSA - Asymetric Encriptation mediante PKCS1_OAEP """
     key = RSA.importKey(open(rsa).read())
     cipher = PKCS1_OAEP.new(key)
-    #message = zlib.compress(message)
     block=128
     offset=0
     blocks=True
