@@ -1,0 +1,14 @@
+.stuk-body
+  .stuk-container
+    .row
+      .col-2
+        =link_to('Volver', root_path, class: 'btn btn-secondary')
+      .col-8
+        %h1.text-center=current_user.email
+        %h3.text-center=current_user.grade
+      .col-2
+        = link_to('Salir', destroy_user_session_path, method: :delete, class: 'btn btn-secondary')
+    .text-center
+      %br
+      %p Por favor, escanea el siguiente código
+      = image_tag(image_path(@qr_code))
