@@ -1,7 +1,9 @@
-class StuksController < ApplicationController
-  before_action :set_stuk, only: [:show, :edit, :update, :destroy]
+require 'barby'
+require 'barby/barcode'
+require 'barby/barcode/qr_code'
+require 'barby/outputter/png_outputter'
 
-  def index
-    @user = current_user
-  end
+class StuksController < ApplicationController
+
+
 end
