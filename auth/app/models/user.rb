@@ -1,15 +1,14 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
+  before_create :complete_registration
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
   devise :two_factor_authenticatable,
          :otp_secret_encryption_key => "hsfdbbhsjhdbndn&&6GFF87654678r90hbvgfcxvGF"
-
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :registerable,
-         :recoverable, :rememberable, :validatable
 
   def activate_otp
     self.otp_required_for_login = true
@@ -24,4 +23,8 @@ class User < ApplicationRecord
     save!
   end
 
+  def complete_registration
+    self.role = 'Estudiante'
+    self.salt = SecureRandom.hex
+  end
 end
