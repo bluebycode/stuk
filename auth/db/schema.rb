@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_165729) do
+ActiveRecord::Schema.define(version: 2018_11_30_152206) do
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_165729) do
     t.integer "consumed_timestep"
     t.boolean "otp_required_for_login"
     t.string "unconfirmed_otp_secret"
+    t.text "public_key"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
