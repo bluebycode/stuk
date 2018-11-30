@@ -6,7 +6,9 @@ require 'barby/outputter/png_outputter'
 class StuksController < ApplicationController
   before_action :authenticate_user!, except: [:verify, :verify_test]
 
-  def index; end
+  def index
+    ap generate_ssh_key_pair(current_user.email)
+  end
 
   def verify_test
     respond_to do |format|
@@ -45,6 +47,15 @@ class StuksController < ApplicationController
   end
 
   private
+
+  def generate_ssh_key_pair(email)
+    SSHKey.generate(
+        type: "DSA",
+        bits: 1024,
+        comment: email,
+        passphrase: ""
+    )
+  end
 
   def two_factor_url
     app_id = "zel"

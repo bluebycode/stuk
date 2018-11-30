@@ -26,7 +26,7 @@ gem 'barby'
 gem 'rqrcode'
 gem 'devise-two-factor'
 gem 'rqrcode_png'
-
+gem 'sshkey'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
