@@ -1,24 +1,21 @@
-# README
+# Instalación del servidor de registro y autenticación 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Para lanzar el servidor de registro y autenticación es necesario contar con una máquina en
+la que se encuentre instaladas las últimas versiones de Ruby y Rails a fecha de 2018-11-30.
+Recomendamos seguir la siguiente guía https://gorails.com/setup/ubuntu/18.10
 
-Things you may want to cover:
+* Ruby 2.5.3
+* Rails 5.2.1.1 
 
-* Ruby version
+Para lanzar el servidor una vez descargado el código, ejecutar en terminal:
 
-* System dependencies
+`$ bundle install`
 
-* Configuration
+`$ rails db:reset`
 
-* Database creation
+`$ rails server`
 
-* Database initialization
+Con ello se lanzará el servidor en nuestra dirección local en el puerto 3000 (puerto por defecto).
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
-
-* ...
