@@ -57,7 +57,7 @@ def processTcp(sourceIp, lastSequence):
   print("sequence tcp got!",sourceIp, lastSequence)
   queue[sourceIp]=lastSequence
   if checksum(lastSequence):
-      open_time_window(ssh)
+      open_time_window(ssh, 'iptables  -A INPUT  -p udp --dport 4003 -m comment --comment "expire=`date -d '+ 5 min' +%s`" -j ACCEPT ')
 
 # Packet parser needed for the sniffer
 def udpparser(packet):
@@ -89,7 +89,8 @@ def ssh_command(ssh, command, publicKey):
     print(stdout.read())
     ssh_append(ssh, publicKey)
 
-def open_time_window(port=4003):
+
+def open_time_window(port=4003, rule):
     try:
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -99,7 +100,7 @@ def open_time_window(port=4003):
         _, stdout, _ = ssh.exec_command("hostname")
         print(stdout.read())
         print("Command:", command)
-        _, stdout, _ = ssh.exec_command('iptables  -A INPUT  -p udp --dport 4003 -s 100.0.1.0/24 -m comment --comment "expire=`date -d '+ 5 min' +%s`" -j ACCEPT ')
+        _, stdout, _ = ssh.exec_command(rule)
         print(stdout.read())
         print(user, destination)
     except Exception as e:
@@ -113,6 +114,7 @@ def handlePublicKey(publicKey, user, destination):
         ssh.connect(hostname=destination, username="cybercamp",
             key_filename=constant.SUPERVISOR_KEY)
         ssh_command(ssh, "adduser {0}".format(user), publicKey)
+        open_time_window(ssh, "iptables -A INPUT -p tcp --dport 22 -j ACCEPT ")
         print(user, destination)
     except Exception as e:
         print('Connection Failed',e)
@@ -129,7 +131,7 @@ def provision(token, default_destination="10.0.1.139"):
         key  = tokens[1]
         totp = tokens[2]
         publickey = tokens[3]
-        r = requests.get(constant.VERIFICATION_PATH.format(base64.b64encode(user+";"+key+";"+totp+";" + default_destination)))
+        r = requests.get(constant.VERIFICATION_PATH.format(base64.b64encode(user+";"+key+";"+totp+";" + default_destination)), verify=False)
         print(r.text,json.loads(r.text))
         response = json.loads(r.text)
         verify = response['verify']
