@@ -1,42 +1,45 @@
 # -*- coding: utf-8 -*-
 
-"""Stuk: Punto de entrada de cliente stuk"""
+"""Stuk: Port-Knocking implementation"""
 import socket
 import select as select
 import time
 import sys
 import os
-import argparse
+import constant
+
+def getLocalIP():
+    return constant.LOCAL_IP
 
 class Sequences(object):
-    def __init__(self, args: list, token):
+    def __init__(self, source, destination, token):
         print("[] Authentication token: {0}".format(token))
-        self._parse_args(args)
+        self.source = source
+        self.destination = destination
+        self.token = token
 
-    def _parse_args(self, args: list):
-        parser = argparse.ArgumentParser()
-        
-        parser.add_argument('destination', help='IP address of destination')
-        parser.add_argument('token', help='TOTP')
-        
-        args = parser.parse_args(args)
-        print("destination",args.destination)
-        print("token",args.token)
-        
-        self.address, _, _, _, (self.destination, _) = socket.getaddrinfo(
-                host="10.0.1.135",
-                port=22,
-                flags=socket.AI_ADDRCONFIG)[0]
+    def send(self, sequence = [4000,4001,4002], timeFrame = 5, ramp = 0.5):
+        print("[] Sending the sequence.. {0}".format(sequence))
+        if constant.DEBUG:
+            print(self.destination, sequence, self.token)
 
-    def stuk(self, destination, sequence = [4000,4001,4002]):
+        #Getting ready the address
+        address_family, _, _, _, (address_ip, _) = socket.getaddrinfo(
+            host=self.destination,
+            port=sequence[0],
+            flags=socket.AI_ADDRCONFIG
+            )[0]
+        #Sending the sequence
         for nth, port in enumerate(sequence):
-            peer = socket.socket(self.address, socket.SOCK_STREAM)
-            peer.setblocking(False)
-            address = (destination, int(port))
-            peer.connect_ex(address)
-            if (nth is len(sequence) - 1):
-                peer.send(b"AAAAAAAAAAAAAAAA")
-            select.select([peer], [peer], [peer], 10000)
-
-            peer.close()
-            time.sleep(0.5)
+            sock = socket.socket(address_family, socket.SOCK_STREAM)
+            sock.setblocking(False)
+            socket_address = (address_ip, int(port))
+            sock.connect_ex(socket_address)
+            #select.select([sock], [sock], [sock], 2000)
+            time.sleep(ramp)
+            sock.close()            
+        time.sleep(timeFrame)
+        #Windows is open!
+        usock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        usock.sendto(self.token, (address_ip, sequence[len(sequence)-1]))
+        usock.close()

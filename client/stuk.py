@@ -4,44 +4,47 @@
 """Stuk: Punto de entrada de cliente stuk"""
 import argparse
 import socket
-from crypto import AE, AD, PairKey, ParsePublicKey
-from pnock import Sequences
-from Crypto.PublicKey import RSA
-import select as select
+from pnock import Sequences, getLocalIP
+import crypto
 import time
 import sys
 import os
+import zlib
+import base64
+import json
+import constant
 
-class Authentication(object):
-    def build(self):
-        token = AE("tests/.keys/it_public.pem", "AAAAAAAAA")
-        print("[] encrypted token {0}".format(token))
-        decrypted = AD("tests/.keys/it_private.pem", token)
-        print("[] decrypted token {0}".format(decrypted))
-        return "AAAAAAAAA"
-
-def keyPath(domain, private=False): 
-    return ".keys/{0}.{1}.key".format(domain, "private" if private else "public")
-
-def addDomain(domain, path):
-    """ Añade las claves creadas sobre el dominio dado """
+def createAuthenticationToken(user, domain, totp, key, encryption=True):
+    """ Creates the authentication token encrypted and ready to send """
+    with open(constant.USER_PUBLIC_KEY.format(user), "r") as f:
+        publicToken = f.read()
+        token = bytes("{0};{1};{2};{3}".format(user,domain,totp, publicToken), 'utf8')
+        if (encryption):
+            return crypto.AE(constant.PLATFORM_KEY, token)
+        else:
+            return base64.b64encode(zlib.compress(token))
+            
+def addDomain(user, domain, path):
+    """ Append the keys into the ssh configuration """
     with open("{0}/.ssh/config".format(os.getenv("HOME")), "a") as f:
-        f.write("Host {0}\n    User cybercamp\n    IdentityFile {1}/{2}\n".format(domain, os.getcwd(), path))
+        f.write("Host {0}\n    User {1}\n    IdentityFile {2}/{3}\n".format(domain, user.split("@")[0], os.getcwd(), path))
 
 def save(path, stream):
     with open(path, 'bw') as f:
         f.write(stream)
 
-def createLocalRealm(user):
+def createLocalRealm(user, domain):
     """ Administra localmente las claves publicas/privadas """
     try:
-        print("[] generating keys...")
-        publicKey, privateKey = PairKey(plain=True)
+        print("[] Generating pair keys...")
+        publicKey, privateKey = crypto.PairKey(plain=True)
+        print("[] Saving keys ...")
+        save(constant.USER_PUBLIC_KEY.format(user), publicKey.exportKey('OpenSSH'))
+        os.chmod(constant.USER_PUBLIC_KEY.format(user), 0o600)
+        save(constant.USER_PRIVATE_KEY.format(user), privateKey.exportKey("PEM"))
         
-        save(keyPath(user), publicKey.exportKey('OpenSSH'))
-        save(keyPath(user, True), privateKey.exportKey("PEM"))
-        
-        addDomain(domain, ".key/{0}.private".format(user))
+        print("[] adding local configuration ...")
+        addDomain(user, domain, constant.USER_PRIVATE_KEY.format(user))
         print("[] ssh configuration saved for user/domain: {0} using {1}...".format(user, ".keys/{0}".format(user)))
         return publicKey
     except Exception as err:
@@ -49,22 +52,44 @@ def createLocalRealm(user):
         pass
     return None
 
-def createAuthenticationToken(domain, key):
-    """ @TODO: work in progress: token must be encrypted using the platform public key """
-    return "token#{0}.{1}".format(domain,key)
+def parseArgumentProfile():
+    """ Loading the preferences from profile file """
+    profile = json.loads(open(constant.PROFILE_DEFAULT_LOCATION).read())
+    return (profile["email"], profile["ip"])
 
 if __name__ == '__main__':
-    #Generamos las claves para el usuario si no existió ( WIP)
-    domain = "{0}_{1}".format("user","domain")
-    publicKey = createLocalRealm(domain)
+    totp_argument = 1
+    (user, destination) = parseArgumentProfile()
+    if (user is None):
+        user  = argv[1]
+        destination = argv[2]
+        totp_argument = 3
+
+    # default sequence
+    sequence = [4000,4001,4002,4003]
+
+    #it generates the keys if not exists
+    publicKey = createLocalRealm("{0}_{1}".format(user, constant.DOMAIN), destination)
     if (publicKey is None):
         exit(-1)
 
-    # Obtener la clave pública proporcionada por la plataforma
-    platformKey = ParsePublicKey(".keys/platform.pub")
+    # TOTP
+    totp = sys.argv[totp_argument]
+    print("[] received one time password: ", totp)
 
-    # Crear token de autenticación a partir de la clave pública de
-    # la plataforma
-    token = createAuthenticationToken(domain, platformKey)
-    print(token)
-    Sequences(sys.argv[1:], token).stuk(destination="10.0.1.137", sequence= [4000,4001,4002])
+    #domain
+    print("[] destination: ", destination)
+    print("[] user/domain: ", user, constant.DOMAIN)
+
+    #use the platform public
+    platformKey = crypto.ParsePublicKey(constant.PLATFORM_KEY)
+    print("[] Clave de plataforma {0}".format(platformKey))
+
+    #creates the authentication token by the platform public
+    token = createAuthenticationToken(user, constant.DOMAIN, totp, platformKey)
+
+    #Sending the port knocking sequence
+    print("[] Sending Token: {0} under the sequence: {1}".format(token,sequence))
+    sequences = Sequences(getLocalIP(), destination,token)
+    sequences.send(sequence=sequence)
+    print("[] Done.")
