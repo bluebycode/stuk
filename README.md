@@ -20,7 +20,10 @@ https://trello.com/b/xQixdEBY/stuk
 * 11:30 brainstorming issues + planificación de tareas
 * 12:30 Desarrollo de *tareas prioritarias* para obtener funcionalidad básica.
 * 19.30 Brainstorming: issues + planificación de tareas
-* 20:30 -
+
+Hito 2:
+* 12.30 Preparacion de la presentación y demo
+
 
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
