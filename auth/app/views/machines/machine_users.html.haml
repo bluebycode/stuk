@@ -15,7 +15,10 @@
     .row
       - @users.each do |user|
         .col-3
-          %input.add-user-checkbox{id: "email-#{user.email}", type: 'checkbox', value: user.email}
+          - if UserMachine.where(user: current_user, machine: @machine).count.zero?
+            %input.add-user-checkbox{id: "email-#{user.email}", type: 'checkbox', value: user.email}
+          - else
+            %input.add-user-checkbox{id: "email-#{user.email}", type: 'checkbox', value: user.email, checked: 'checked'}
           %label{for: "email-#{user.email}"}= user.email
 
 :javascript

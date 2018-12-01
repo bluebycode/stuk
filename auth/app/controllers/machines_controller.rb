@@ -31,6 +31,8 @@ class MachinesController < ApplicationController
     user = User.find_by(email: params['email'])
     umach = UserMachine.find_by(user: user, machine: @machine)
     umach&.delete
+    user_machines = user.user_machines
+    ap user_machines
     head :ok
   end
 

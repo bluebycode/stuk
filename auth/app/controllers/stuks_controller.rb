@@ -10,6 +10,8 @@ class StuksController < ApplicationController
 
   def index
     redirect_to admin_dashboard_path if current_user.admin?
+    user_machines = current_user.user_machines
+    ap user_machines
     @machines = Machine.where(id: current_user.user_machines.pluck(:machine_id))
   end
 
