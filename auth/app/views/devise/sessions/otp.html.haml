@@ -1,0 +1,13 @@
+.login-body
+  .login-container
+    = render 'layouts/alerts'
+    %h1.text-center Área de laboratorios
+    %h3.text-center Universidad Zel
+    %br
+    %p Introduzca el código visible en Google Authenticator:
+    = form_for "", url: users_sessions_verify_otp_path, method: :post do |f|
+      .form-inputs.text-center
+        = f.text_field :otp_attempt
+      %br
+      .form-actions
+        = f.submit 'Log in', class: 'btn btn-secondary'

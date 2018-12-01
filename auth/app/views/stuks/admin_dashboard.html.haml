@@ -14,10 +14,24 @@
         = link_to(destroy_user_session_path, method: :delete, class: 'btn btn-secondary my-search-form') do
           Salir
     %br
+    %h2 Añadir máquinas:
+    %br
+    = simple_form_for @machine do |f|
+      .row
+        .col-4
+          = f.input :name, label: 'Nombre', required: true
+        .col-4
+          = f.input :ip, label: 'IP', required: true
+        .col-4
+          = f.input :sequence, label: 'Secuencia', required: true
+        .col-12
+          = f.input :image_src, label: 'URL Imagen', required: false
+      = f.button :submit, class: 'btn btn-primary'
+    %br
     %h2 Máquinas disponibles:
     %br
     .row
       - @machines.each do |machine|
         .col-4
-          = link_to image_tag(machine.image_src), generate_config_path(machine)
+          = link_to image_tag(machine.image_src), machine_users_path(machine)
           %h4= machine.name

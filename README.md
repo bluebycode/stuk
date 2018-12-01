@@ -19,6 +19,8 @@ https://trello.com/b/xQixdEBY/stuk
 * 10:00 brainstorming y desarrollo
 * 11:30 brainstorming issues + planificación de tareas
 * 12:30 Desarrollo de *tareas prioritarias* para obtener funcionalidad básica.
+* 19.30 Brainstorming: issues + planificación de tareas
+* 20:30 -
 
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
 
@@ -78,6 +80,24 @@ El supervisor se encarga de toda la gestión de claves SSH
 se le proporciona un fichero de configuración y el cliente de conexión para que el proceso sea cómodo.
 En todo caso debe iniciar el proceso con la contraseña generada mediante Google Authenticator.
 
+# Instalación del servidor de registro y autenticación 
+
+Para lanzar el servidor de registro y autenticación es necesario contar con una máquina en
+la que se encuentre instaladas las últimas versiones de Ruby y Rails a fecha de 2018-11-30.
+Recomendamos seguir la siguiente guía https://gorails.com/setup/ubuntu/18.10
+
+* Ruby 2.5.3
+* Rails 5.2.1.1 
+
+Para lanzar el servidor una vez descargado el código, ejecutar en terminal:
+
+`$ bundle install`
+
+`$ rails db:reset`
+
+`$ rails server`
+
+Con ello se lanzará el servidor en nuestra dirección local en el puerto 3000 (puerto por defecto).
 
 ## Recursos utilizados
 
