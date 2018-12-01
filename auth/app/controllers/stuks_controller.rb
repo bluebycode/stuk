@@ -27,6 +27,10 @@ class StuksController < ApplicationController
     send_data config_json, filename: 'configs.json'
   end
 
+  def download_stuk_client
+    send_data Rails.root.join('lib', 'assets', 'stukv1.0.zip'), filename: 'stukv1.0.zip'
+  end
+
   def verify_test
     respond_to do |format|
       format.json do

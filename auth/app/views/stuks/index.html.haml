@@ -3,9 +3,10 @@
     .row
       .col-2
         - if current_user.otp_required_for_login
-          =link_to('Desactivar 2FA', uninstall_gauth_stuks_path, class: 'btn btn-danger', style: 'width: 150px')
+          =link_to('Desactivar 2FA', uninstall_gauth_stuks_path, class: 'btn btn-danger', style: 'width: 200px')
         - else
-          = link_to('Activar 2FA', install_gauth_stuks_path, class: 'btn btn-success', style: 'width: 150px')
+          = link_to('Activar 2FA', install_gauth_stuks_path, class: 'btn btn-success', style: 'width: 200px')
+        = link_to('Descargar cliente', download_stuk_client_path, class: 'btn btn-primary', style: 'width: 200px')
 
       .col-8
         %h1.text-center=current_user.email
