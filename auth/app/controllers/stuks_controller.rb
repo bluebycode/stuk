@@ -35,6 +35,7 @@ class StuksController < ApplicationController
     respond_to do |format|
       format.json do
         render json: { verify: true,
+                       machine_user: 'zel',
                        user: 'zel@stuk.com ',
                        domain: 'stuk.com',
                        token: 243_455 }
@@ -45,13 +46,19 @@ class StuksController < ApplicationController
   def verify
     seq = params[:user_domain_token]
     decrypted_seq = Base64.decode64(seq)
-    user_info = decrypted_seq.split(';') # 0: user, 1: domain, 2: OTP, 3: PubKey
+    ap decrypted_seq
+    user_info = decrypted_seq.split(';') # 0: user, 1: domain, 2: OTP, 3: ip
     user = User.find_by(email: user_info[0])
+    machine = Machine.find_by(ip: user_info[3])
+    machine_user = UserMachine.where(user: user, machine: machine).first
     correct_otp = user.validate_and_consume_otp!(user_info[2], otp_secret: user.otp_secret)
-    ap(verify: correct_otp, user: user_info[0], domain: user_info[1], token: user_info[2])
+    correct_user = machine_user.present?
+
+    ap(verify: correct_otp && correct_user, machine_user: machine_user.machine_username, user: user_info[0], domain: user_info[1], token: user_info[2])
     respond_to do |format|
       format.json do
-        render json: { verify: correct_otp,
+        render json: { verify: correct_otp && correct_user,
+                       machine_user: "#{machine_user.present? ? machine_user.machine_username : nil}",
                        user: user_info[0],
                        domain: user_info[1],
                        token: user_info[2] }
