@@ -1,3 +1,2 @@
 # Supervisor parser
-
-just run ```python agent.py```
+just run ```sudo python supervisor.py```
