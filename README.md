@@ -7,28 +7,9 @@ Stuk es una solución para la gestión segura de ssh en equipos remotos mediante
 
 https://trello.com/b/xQixdEBY/stuk
 
-### Cronología
-
-*Hito 1*
-* 15:00 Brainstorming, sobre el desarrollo de tareas para antes del primer hito, creación de tareas y asignación, seguimiento.
-* 16:00 Montaje de infrastructura virtualizada. Inicio del desarrollo de stuk-client y stuk-auth.
-* 17:00 Desarrollo (stuk auth creado / cliente / supervisor recupera paquetes mediante libreria libcap)
-* 18:00 Brainstorming de aceleration. Tareas pendientes como acelerarlas
-* 19:00 Desarrollo + Planificación en la resolución y tareas pendientes para el siguiente dia
-
-* 10:00 brainstorming y desarrollo
-* 11:30 brainstorming issues + planificación de tareas
-* 12:30 Desarrollo de *tareas prioritarias* para obtener funcionalidad básica.
-* 19.30 Brainstorming: issues + planificación de tareas
-
-Hito 2:
-* 12.30 Preparacion de la presentación y demo
-
+# New demo approaching - Working in progress 
 
 ![](recursos/Screen%20Shot%202018-11-05%20at%2014.40.10.png)
-
-
-Acceso actual: http://172.16.64.77:3000
 
 
 **Stuk cliente**. Cliente SSH encapsulado con mecanismo de Port-Knocking (Python).
